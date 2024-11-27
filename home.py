@@ -47,3 +47,4 @@ sns.barplot(x='city_name', y='city_count',data=df_sorted)
 plt.xticks(rotation=45)
 plt.title('지역별 성범죄 통계')
 st.pyplot(fig)
+
