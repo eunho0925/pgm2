@@ -1,6 +1,5 @@
 streamlit
 requests
-pandas 
-xml
+pandas
 matplotlib
 seaborn 
