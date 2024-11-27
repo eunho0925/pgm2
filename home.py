@@ -6,17 +6,19 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import seaborn as sns
 import matplotlib.font_manager as fm
+
 key=st.secrets['key']
 
 st.header('첫 홈페이지 입니다')
 url='http://api.sexoffender.go.kr/openapi/SOCitysStats/'
 params={
     'serviceKey':key
-
 }
-#api 호출
+
+# api 호출
 response=requests.get(url, params=params)
 print(response.content)
+
 if response.status_code==200:
     root=ET.fromstring(response.content)
     data=[]
@@ -31,20 +33,21 @@ if response.status_code==200:
     st.dataframe(df)
 else:
     st.error(f'Failed to fetch data:{response.status_code} ')
+
 df.to_csv('a.csv')
 df['city_count']=df['city_count'].astype(int)
 df_sorted=df.sort_values('city_count',ascending=False).head(10)
 st.dataframe(df_sorted)
 
+# 폰트 설정: Nanum Gothic
+mpl.rcParams['font.family'] = 'Nanum Gothic'  # 한글 폰트 설정
+mpl.rcParams['font.size'] = 11
+mpl.rcParams['axes.unicode_minus'] = False  # 마이너스 부호 깨짐 방지
 
-#시각화
-mpl.rcParams['font.family']='Malgun Gothic'
-mpl.rcParams['font.size']=11
-mpl.rcParams['axes.unicode_minus']=False
-
-fig=plt.figure(figsize=(12,6))
-sns.barplot(x='city_name', y='city_count',data=df_sorted)
+fig = plt.figure(figsize=(12,6))
+sns.barplot(x='city_name', y='city_count', data=df_sorted)
 plt.xticks(rotation=45)
 plt.title('지역별 성범죄 통계')
 st.pyplot(fig)
+
 
